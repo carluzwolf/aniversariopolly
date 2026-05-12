@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Aniversário Pollyana 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html,body{
+  width:100%;height:100%;overflow:hidden;
+  font-family:'Nunito',sans-serif;
+  background:#ffb3d9;
+  cursor:none;
+}
+
+/* ── CURSOR ── */
+#cursor{
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:9999;
+  font-size:20px;
+  transform:translate(-50%,-50%);
+  transition:left .05s,top .05s;
+}
+
+/* ── PARTICLES ── */
+#particles{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:1;
+}
+
+/* ── MUSIC ── */
+#music-btn{
+  position:fixed;top:14px;right:14px;z-index:500;
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(255,255,255,.8);backdrop-filter:blur(8px);
+  border:2px solid #ffb3d9;
+  font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(255,110,180,.3);
+  transition:transform .2s;
+}
+#music-btn:hover{transform:scale(1.1);}
+
+/* ── COUNTER BAR ── */
+#counter-bar{
+  position:fixed;bottom:0;left:0;width:100%;z-index:500;
+  background:rgba(255,255,255,.75);backdrop-filter:blur(12px);
+  border-top:1.5px solid #ffd6ec;
+  padding:7px 16px;
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;flex-wrap:wrap;
+  font-weight:800;color:#c0006e;font-size:.82rem;
+}
+
+/* ══════════════════════════════
+   SCREEN SYSTEM
+   Each screen = position:absolute, fills #app, scrolls internally
+══════════════════════════════ */
+#app{
+  position:fixed;inset:0;
+  overflow:hidden;
+}
+
+.screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;
+  overflow-y:auto;
+  overflow-x:hidden;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .6s ease;
+  z-index:10;
+  -webkit-overflow-scrolling:touch;
+}
+.screen.active{
+  opacity:1;
+  pointer-events:all;
+}
+
+/* ══ SCREEN 1 – INTRO ══ */
+#s-intro{
+  background:linear-gradient(160deg,#ff6eb4 0%,#ffb3d9 55%,#ffd6ec 100%);
+  justify-content:center;
+}
+.intro-inner{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:40px 24px 90px;
+  min-height:100vh;
+  position:relative;z-index:2;
+}
+.intro-inner h1{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(2rem,8vw,4.8rem);
+  color:#fff;
+  text-shadow:0 0 40px rgba(255,110,180,.6),0 4px 24px rgba(0,0,0,.18);
+  line-height:1.2;
+  animation:float 3s ease-in-out infinite;
+}
+.intro-inner .sub{
+  color:#fff;
+  font-size:clamp(.95rem,3vw,1.3rem);
+  opacity:.92;margin-top:14px;
+  text-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+#btn-enter{
+  margin-top:44px;
+  padding:18px 56px;
+  background:#fff;
+  color:#e0006a;
+  border:none;border-radius:60px;
+  font-size:1.25rem;font-weight:900;
+  font-family:'Nunito',sans-serif;
+  cursor:pointer;
+  box-shadow:0 10px 48px rgba(255,110,180,.45);
+  animation:pulse 2.2s ease-in-out infinite;
+  transition:transform .2s,box-shadow .2s;
+}
+#btn-enter:hover{transform:scale(1.07);}
+
+.fh-wrap span{
+  position:absolute;
+  font-size:1.5rem;
+  animation:rise var(--d) ease-in infinite var(--delay);
+  left:var(--l);bottom:-40px;opacity:0;
+  pointer-events:none;
+}
+@keyframes rise{0%{opacity:1;transform:translateY(0) rotate(0);}100%{opacity:0;transform:translateY(-110vh) rotate(360deg);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
+/* ══ SCREEN 2 – VAULT ══ */
+#s-vault{
+  background:linear-gradient(160deg,#ffd6ec 0%,#fff0f8 55%,#ffb3d9 100%);
+  justify-content:center;
+}
+.vault-inner{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:40px 20px 90px;
+  min-height:100vh;
+  width:100%;
+}
+.vault-inner h2{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(1.2rem,4vw,2rem);
+  color:#c0006e;
+  margin-bottom:6px;
+  text-shadow:0 2px 12px rgba(192,0,110,.18);
+}
+.vault-hint{color:#e05a9a;font-size:.9rem;font-weight:700;margin-bottom:28px;}
+.vault-card{
+  background:rgba(255,255,255,.6);
+  backdrop-filter:blur(20px);
+  border:1.5px solid rgba(255,200,230,.7);
+  border-radius:28px;
+  padding:28px 24px;
+  width:min(340px,92vw);
+  box-shadow:0 8px 48px rgba(255,110,180,.22);
+  display:flex;flex-direction:column;align-items:center;
+}
+.vault-emoji{font-size:4.5rem;margin-bottom:14px;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 0 16px #ff6eb4);}
+.vault-display{
+  width:100%;background:rgba(255,110,180,.1);
+  border:2px solid #ffb3d9;border-radius:14px;
+  text-align:center;font-size:2rem;letter-spacing:12px;
+  padding:12px 8px;color:#c0006e;font-weight:900;
+  font-family:monospace;min-height:54px;margin-bottom:18px;
+  transition:color .3s;
+}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;width:100%;}
+.key{
+  background:#fff;border:2px solid #ffd6ec;
+  color:#c0006e;font-size:1.35rem;font-weight:900;
+  font-family:'Nunito',sans-serif;
+  border-radius:14px;padding:14px 8px;
+  cursor:pointer;
+  box-shadow:0 2px 8px rgba(255,110,180,.12);
+  transition:all .14s;
+}
+.key:hover,.key:active{background:#ff6eb4;color:#fff;transform:scale(.96);}
+.key-del{background:#fff0f8;}
+#vault-msg{margin-top:12px;font-size:.92rem;font-weight:800;color:#e05a9a;min-height:22px;}
+.shake{animation:shake .4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-10px);}75%{transform:translateX(10px);}}
+
+/* vault flash */
+#vault-flash{
+  position:fixed;inset:0;z-index:400;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;opacity:0;transition:opacity .4s;
+}
+#vault-flash.show{opacity:1;}
+.flash-emoji{font-size:7rem;animation:boom 1.1s ease-out forwards;}
+@keyframes boom{0%{transform:scale(.4);opacity:1;}70%{transform:scale(2);opacity:1;}100%{transform:scale(3.5);opacity:0;}}
+
+/* ══ SCREEN 3 – LETTER ══ */
+#s-letter{
+  background:linear-gradient(160deg,#fff0f8 0%,#ffd6ec 100%);
+}
+.letter-inner{
+  width:min(660px,94vw);
+  padding:40px 0 90px;
+}
+.env-card{
+  background:#fff;
+  border:2.5px solid #ffd6ec;
+  border-radius:24px;
+  padding:40px 28px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 8px 40px rgba(255,110,180,.18);
+  transition:transform .25s,box-shadow .25s;
+}
+.env-card:hover{transform:translateY(-5px);box-shadow:0 16px 52px rgba(255,110,180,.3);}
+.env-card .env-ico{font-size:5rem;display:block;animation:float 3s ease-in-out infinite;}
+.env-card p{color:#c0006e;font-weight:800;margin-top:14px;font-size:1.05rem;}
+.letter-paper{
+  display:none;
+  background:#fff;
+  border-radius:24px;
+  padding:36px 32px;
+  box-shadow:0 8px 48px rgba(255,110,180,.15);
+  border:2px solid #ffd6ec;
+  animation:paperOpen .5s ease;
+}
+@keyframes paperOpen{from{transform:scaleY(.03);opacity:0;}to{transform:scaleY(1);opacity:1;}}
+.letter-title{
+  font-family:'Pacifico',cursive;
+  color:#ff6eb4;font-size:1.5rem;
+  text-align:center;margin-bottom:24px;
+}
+.letter-paper p{color:#555;line-height:1.95;font-size:1rem;margin-bottom:16px;}
+#btn-stop-crying{
+  display:block;margin:18px auto;
+  padding:14px 36px;
+  background:linear-gradient(135deg,#ff6eb4,#c0006e);
+  color:#fff;border:none;border-radius:50px;
+  font-size:1rem;font-weight:900;
+  font-family:'Nunito',sans-serif;
+  cursor:pointer;
+  box-shadow:0 6px 28px rgba(255,110,180,.38);
+  transition:transform .2s;
+}
+#btn-stop-crying:hover{transform:scale(1.06);}
+#cry-msg{
+  display:none;
+  background:rgba(255,182,218,.25);
+  border-radius:14px;padding:18px;margin:14px 0;
+  font-weight:800;color:#c0006e;
+  text-align:center;font-size:.95rem;
+  animation:paperOpen .4s ease;
+}
+.go-gallery-btn{
+  display:block;margin:28px auto 0;
+  padding:16px 44px;
+  background:linear-gradient(135deg,#ff6eb4,#c0006e);
+  color:#fff;border:none;border-radius:60px;
+  font-size:1.05rem;font-weight:900;
+  font-family:'Nunito',sans-serif;
+  cursor:pointer;
+  box-shadow:0 8px 32px rgba(255,110,180,.38);
+  transition:transform .2s,box-shadow .2s;
+}
+.go-gallery-btn:hover{transform:scale(1.06);}
+
+/* ══ SCREEN 4 – GALLERY ══ */
+#s-gallery{
+  background:linear-gradient(160deg,#ffd6ec 0%,#fff0f8 100%);
+}
+.gallery-inner{
+  width:min(940px,96vw);
+  padding:32px 0 90px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.gallery-inner h2{
+  font-family:'Pacifico',cursive;
+  font-size:clamp(1.4rem,4vw,2.2rem);
+  color:#c0006e;margin-bottom:4px;
+  text-shadow:0 2px 12px rgba(192,0,110,.15);
+}
+.gsub{color:#e05a9a;font-weight:700;font-size:.88rem;margin-bottom:24px;}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:14px;width:100%;
+}
+.photo-card{
+  background:#fff;
+  border-radius:16px;
+  padding:8px 8px 14px;
+  box-shadow:0 4px 22px rgba(255,110,180,.15);
+  border:2px solid #ffd6ec;
+  text-align:center;
+  transform:rotate(var(--r));
+  transition:transform .25s,box-shadow .25s;
+  cursor:pointer;
+}
+.photo-card:hover{transform:rotate(0deg) scale(1.05);box-shadow:0 10px 36px rgba(255,110,180,.32);}
+.photo-card img{
+  width:100%;border-radius:9px;
+  aspect-ratio:1/1;object-fit:cover;display:block;
+}
+.photo-caption{color:#c0006e;font-size:.7rem;font-weight:800;margin-top:6px;line-height:1.3;}
+
+@media(max-width:480px){
+  .gallery-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor">💕</div>
+<canvas id="particles"></canvas>
+<audio id="music" loop>
+  <source src="https://github.com/carluzwolf/Polly-/raw/refs/heads/main/everything%20i%20wanted_spotdown.org.mp3" type="audio/mpeg">
+</audio>
+<button id="music-btn">🎵</button>
+<div id="counter-bar">
+  <span>🎂 15 ANOS DA POLLYANA 💕</span>
+  <span id="counter-time"></span>
+</div>
+<div id="vault-flash"><span class="flash-emoji">💕</span></div>
+
+<div id="app">
+
+  <!-- SCREEN 1: INTRO -->
+  <div class="screen active" id="s-intro">
+    <div class="fh-wrap" id="fh-wrap"></div>
+    <div class="intro-inner">
+      <h1>Feliz Aniversário<br>Pollyana 🎂💕</h1>
+      <p class="sub">Um presente especial feito por Carluz ☺️</p>
+      <button id="btn-enter">✨ Entrar ✨</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: VAULT -->
+  <div class="screen" id="s-vault">
+    <div class="vault-inner">
+      <h2>Digite a senha para abrir sua surpresa 💕</h2>
+      <p class="vault-hint">Dica: Dia do seu nascimento + Dia do meu nascimento ☺️</p>
+      <div class="vault-card" id="vault-box">
+        <div class="vault-emoji">🔐</div>
+        <div class="vault-display" id="vault-display">_ _ _ _</div>
+        <div class="keypad" id="keypad">
+          <button class="key" data-k="1">1</button>
+          <button class="key" data-k="2">2</button>
+          <button class="key" data-k="3">3</button>
+          <button class="key" data-k="4">4</button>
+          <button class="key" data-k="5">5</button>
+          <button class="key" data-k="6">6</button>
+          <button class="key" data-k="7">7</button>
+          <button class="key" data-k="8">8</button>
+          <button class="key" data-k="9">9</button>
+          <button class="key key-del" data-k="del">⌫</button>
+          <button class="key" data-k="0">0</button>
+          <button class="key" data-k="ok">OK ✓</button>
+        </div>
+        <div id="vault-msg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: LETTER -->
+  <div class="screen" id="s-letter">
+    <div class="letter-inner">
+      <div class="env-card" id="env-card">
+        <span class="env-ico">💌</span>
+        <p>Clique para abrir sua carta especial 💕</p>
+      </div>
+      <div class="letter-paper" id="letter-paper">
+        <div class="letter-title">Uma carta para você 🥹💕</div>
+        <p>Ahhh que bom que você clicou e pegou vírus 🥹🥹🥹</p>
+        <p>Bom, agora é sério....</p>
+        <p>Polly, um grande feliz aniversário pra você! Você está completando 15 aninhos! Bom, pra nós homens 15 anos não é grandes coisas né, só 18 anos, mas pra você que é menina 15 anos é tipo, WOW MEU PAI ETERNO CELESTIAL, então eu espero que esse seu dia seja INCRIVELMENTE PERFEITO ❤️❤️🥰💕💞</p>
+        <p>Oque eu tenho pra falar de você? Bom, eu não sei kkk não sou bom com palavras 🥹 mas queria que você soubesse que eu TE AMO MUITO, você é a minha irmã que nasceu de outra xereca, você é a minha irmã de laaaaa de Ivaiporã (ninguém conhece essa porra) kkk, eu simplesmente amo muito você, amo conversar com você, amo ficar em chamada com você, amo seu contato, amo sua presença na minha vida, amo tudo! LITERALMENTE TODOS MEUS AMIGOS DA ESCOLA TE CONHECE! DESDE O ANO PASSADO!!! DESDE "POLLY BOQUETY", então tipo assim, você não faz parte da minha vida, você É a minha vida ❤️💕💞</p>
+        <p>Espero que você continue sendo essa menina alegre, feliz, contente, gentil, tudo de bom que você é hoje, NUNCA mude quem você é por causa de alguém ou por causa de algo que aconteceu na sua vida, tá bom? Você é perfeita assim e eu amo seu jeitinho 🥹 e eu amo o jeito que a gente tem de conversar que ONLY A GENTE ENTENDE SO MUCH, então eu espero que você just be you forever ☺️☺️☺️</p>
+        <p>Bom, eu realmente sou idiota né tropa kkk eu já errei MUITO COM VOCÊ, a gente já passou por várias discussões e algumas brigas, mas hoje estamos bem ok 🥺🥺 e eu acho que vai ser assim pra sempre, vai ter brigas? Sim, mas acredito que a gente vai sempre se resolver mesmo que leve um tempo ☀️🌄 Então, realmente me desculpa pelas coisas erradas que eu fiz/falei ou sei lá, realmente me desculpa por tudo isso mesmo</p>
+        <p>Enfim, hoje é um dia MUITO FELIZ, MUITO ESPECIAL, e eu estou muito feliz e proud por eu estar presente em um momento tão significativo pra você 💕💞❤️ agora você não é mais menina, é menine 🙂.... Não.... Agora é mulher 🎉🥰 kkk mentira, ainda é menina sim porra. Bom, você agora tem 15 anos e é só o começo da sua vida, vai acontecer muita coisa com você ☠️☠️ kkk PARA.. No caso, esse é o começo da sua vida, você ainda vai aproveitar muito ela enquanto é tempo.................. PARA PORRA... RESPIRA.... Olha, é o começo da sua vida, você vai amadurecer mais ainda, vai crescer, vai virar adulta e esses negócios aí...</p>
+        <p>Então é isso, eu acho 🥹🙂❤️💕</p>
+        <p>Feliz aniversário meu amorzinho 🥺🥺🥺☺️🥹 espero que sua festa seja maravilhosa, seu dia seja maravilhoso, seja perfeito e como você sempre sonhou que fosse!</p>
+        <p>E se você tiver chorando agora por algum motivo, aperte o botão abaixo.... 😤</p>
+        <button id="btn-stop-crying">Parar de Chorar 😤</button>
+        <div id="cry-msg">UFA! 😤 Agora que você apertou esse botão, automaticamente você vai PARAR de chorar.... Daqui a alguns segundos..... Eu acho.... É....</div>
+        <p>Bom, eu acho que é isso 🥹🥹🥺🥺💕💕💕 eu não sei oque escrever mais, porquê eu sou PÉSSIMO ESCREVENDO, então espero que você esteja bem, e que você fique sempre bem, pode contar comigo pra tudo tá?????????? Eu te amo muito muito muito muito muito muito muito muito ❤️❤️🥰🥰🥰❤️ bjsss, feliz aniversário 🎂🎂🎂🎊🎊🎂🎂🎂🎊🎊🎂 feliz aniversário pra Betina também kkk 🥺 bjss meu amorrr ❤️❤️❤️🎊💕💕🥰💕</p>
+        <p style="text-align:center;font-size:1.2rem;margin-top:8px;">— Carluz 💕</p>
+        <button class="go-gallery-btn" id="go-gallery">Ver Galeria de Fotos 📸💕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: GALLERY -->
+  <div class="screen" id="s-gallery">
+    <div class="gallery-inner">
+      <h2>📸 Nossas Memórias 💕</h2>
+      <p class="gsub">As fotos mais lindas do universo inteiro ✨🥹</p>
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+});
+
+// PARTICLES
+const canvas = document.getElementById('particles');
+const ctx    = canvas.getContext('2d');
+let W, H, pts = [];
+const EMOJIS = ['💕','✨','⭐','🌸','💖','💫'];
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+function mkPt(){
+  return { x:Math.random()*W, y:H+20, vx:(Math.random()-.5)*.5,
+    vy:-(Math.random()*.9+.35), size:Math.random()*14+9,
+    life:1, decay:Math.random()*.003+.0015,
+    e:EMOJIS[Math.floor(Math.random()*EMOJIS.length)] };
+}
+for(let i=0;i<20;i++){ let p=mkPt(); p.y=Math.random()*H; pts.push(p); }
+(function loop(){
+  ctx.clearRect(0,0,W,H);
+  if(pts.length<35 && Math.random()<.06) pts.push(mkPt());
+  pts.forEach((p,i)=>{
+    ctx.globalAlpha = p.life;
+    ctx.font = p.size + 'px serif';
+    ctx.fillText(p.e, p.x, p.y);
+    p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+    if(p.life<=0||p.y<-40) pts[i] = mkPt();
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(loop);
+})();
+
+// FLOATING HEARTS
+const fhw = document.getElementById('fh-wrap');
+const HES = ['💕','💖','💗','💓','🌸','✨','⭐','🩷'];
+for(let i=0;i<20;i++){
+  const s = document.createElement('span');
+  s.textContent = HES[i%HES.length];
+  s.style.cssText = `
+    position:absolute;font-size:1.4rem;
+    --l:${Math.random()*100}%;
+    --d:${3+Math.random()*5}s;
+    --delay:${Math.random()*6}s;
+    animation:rise var(--d) ease-in infinite var(--delay);
+    left:var(--l);bottom:-40px;opacity:0;pointer-events:none;
+  `;
+  fhw.appendChild(s);
+}
+
+// SCREEN MANAGER — key fix: scrollTop reset on the screen element itself
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const t = document.getElementById(id);
+  t.scrollTop = 0;
+  t.classList.add('active');
+}
+
+// MUSIC
+const music    = document.getElementById('music');
+const musicBtn = document.getElementById('music-btn');
+let playing = false;
+function startMusic(){
+  if(!playing){ music.volume=.6; music.play().catch(()=>{}); playing=true; musicBtn.textContent='🔊'; }
+}
+musicBtn.addEventListener('click', () => {
+  if(playing){ music.pause(); playing=false; musicBtn.textContent='🔇'; }
+  else startMusic();
+});
+
+// ENTER
+document.getElementById('btn-enter').addEventListener('click', () => {
+  startMusic();
+  goTo('s-vault');
+});
+
+// VAULT
+let code = '';
+const CORRECT = '1208';
+const disp   = document.getElementById('vault-display');
+const vmsg   = document.getElementById('vault-msg');
+const vbox   = document.getElementById('vault-box');
+const WRONGS = [
+  'ERROU KKKKK tenta de novo 🥺',
+  'Hmm... não era esse não amiga 😂',
+  'Quase! (mentira) 🤣',
+  'Tsc tsc tsc... pensa melhor 🤔💕',
+  'NÃO! Mas te amo por tentar 💖'
+];
+let wc = 0;
+function updDisp(){
+  let s=''; for(let i=0;i<4;i++) s += (code[i]||'_') + (i<3?' ':'');
+  disp.textContent = s;
+}
+document.getElementById('keypad').addEventListener('click', e => {
+  const k = e.target.dataset.k;
+  if(!k) return;
+  if(k==='del'){ code=code.slice(0,-1); vmsg.textContent=''; updDisp(); return; }
+  if(k==='ok'){
+    if(code===CORRECT){ openVault(); return; }
+    vmsg.textContent = WRONGS[wc++%WRONGS.length];
+    vbox.classList.remove('shake'); void vbox.offsetWidth; vbox.classList.add('shake');
+    disp.style.color='#e00'; setTimeout(()=>disp.style.color='',700);
+    code=''; updDisp(); return;
+  }
+  if(code.length<4){ code+=k; updDisp(); }
+  if(code.length===4 && code===CORRECT) openVault();
+});
+function openVault(){
+  const fl = document.getElementById('vault-flash');
+  fl.classList.add('show');
+  vmsg.textContent = '🎉 ACERTOU! Abrindo... 💕';
+  disp.style.color = '#009e5a';
+  setTimeout(() => { fl.classList.remove('show'); goTo('s-letter'); }, 1400);
+}
+
+// LETTER
+document.getElementById('env-card').addEventListener('click', () => {
+  document.getElementById('env-card').style.display = 'none';
+  document.getElementById('letter-paper').style.display = 'block';
+});
+document.getElementById('btn-stop-crying').addEventListener('click', () => {
+  document.getElementById('cry-msg').style.display = 'block';
+});
+document.getElementById('go-gallery').addEventListener('click', () => goTo('s-gallery'));
+
+// GALLERY
+const PHOTOS = [
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20251203-WA0479.jpg?raw=true',cap:'Ela achando que tá ótima kkk 🥰'},
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20251222-WA0528.jpg?raw=true',cap:'A mais fofa do universo ✨'},
+  {url:'https://raw.githubusercontent.com/carluzwolf/Polly-/refs/heads/main/IMG-20260302-WA0026.jpg',cap:'Isso é arte, não discuto 💕'},
+  {url:'https://raw.githubusercontent.com/carluzwolf/Polly-/refs/heads/main/IMG-20260302-WA1003.jpg',cap:'Olha essa gracinha 🥺'},
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20260302-WA1006.jpg?raw=true',cap:'Top model de Ivaiporã 👑'},
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20260302-WA1004.jpg?raw=true',cap:'Eu AMO essa foto demais 💖'},
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20260302-WA1009.jpg?raw=true',cap:'Alguém chama a Vogue 📸'},
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20260302-WA1008.jpg?raw=true',cap:'Perfeição em forma de pessoa 🌸'},
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20260406-WA1045.jpg?raw=true',cap:'Estrela nascente ⭐'},
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20260304-WA0207.jpg?raw=true',cap:'Minha irmã que amo demais 🥹'},
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20260412-WA1322.jpg?raw=true',cap:'Isso é um presente visual 💕'},
+  {url:'https://github.com/carluzwolf/Polly-/blob/main/IMG-20260412-WA1346.jpg?raw=true',cap:'Ridícula da melhor forma kkk 😂💖'},
+  {url:'https://raw.githubusercontent.com/carluzwolf/Polly-/refs/heads/main/IMG-20260501-WA1369.jpg',cap:'A mais de todas as mais 🌟'},
+];
+const ROTS = ['-2deg','-1.5deg','-1deg','0deg','1deg','1.5deg','2deg'];
+const grid = document.getElementById('gallery-grid');
+PHOTOS.forEach((ph, i) => {
+  const c = document.createElement('div');
+  c.className = 'photo-card';
+  c.style.setProperty('--r', ROTS[i%ROTS.length]);
+  c.innerHTML = `<img src="${ph.url}" alt="foto" loading="lazy"><div class="photo-caption">${ph.cap}</div>`;
+  c.addEventListener('click', () => {
+    c.style.transform = 'scale(1.12) rotate(0)';
+    setTimeout(() => c.style.transform = '', 400);
+  });
+  grid.appendChild(c);
+});
+
+// COUNTER
+const bday = new Date('2026-05-12T00:00:00');
+function tick(){
+  const diff = Math.max(0, new Date() - bday);
+  const s = Math.floor(diff/1000)%60,
+        m = Math.floor(diff/60000)%60,
+        h = Math.floor(diff/3600000)%24,
+        d = Math.floor(diff/86400000);
+  document.getElementById('counter-time').textContent =
+    d > 0
+      ? `${d}d ${h}h ${m}m ${s}s de vida aos 15 💕`
+      : `${h}h ${m}m ${s}s de aniversário 🎂`;
+}
+setInterval(tick, 1000); tick();
+</script>
+</body>
+</html>
